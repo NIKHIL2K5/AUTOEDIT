@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: vibe-editing-backend
+    env: python
+    plan: free
+    buildCommand: |
+      apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+      pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: videos
+      - key: SUPABASE_TABLE
+        value: videos
+      - key: CORS_ALLOW_ORIGINS
+        value: "*"
+      - key: WHISPER_MODEL
+        value: base
